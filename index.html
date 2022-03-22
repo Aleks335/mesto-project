@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>БОЙ Место</title>
+    <link href="pages/index.css" rel="stylesheet">
+</head>
+
+<body class="page">
+<header class="header">
+    <img alt="Логотип" class="header__logo" src="./images/logo/logo.svg">
+</header>
+<main class="content">
+    <section class="profile">
+        <img alt="Фото Жак-Ив Кусто" class="profile__content" src="./images/profile/avatar.jpg">
+        <h1 class="profile__info-name">Жак-Ив Кусто</h1>
+        <p class="profile__info-lob">Исследователь океана</p>
+        <button class="profile__edit" type="button">
+            <img alt="Кнопка редактирования" class="profile__edit-icon" src="./images/icon/icon-edit.svg">
+        </button>
+        <button class="profile__add-button" type="button">
+            <img alt="Кнопка добавить" class="profile__add-icon" src="./images/icon/icon-add.svg">
+        </button>
+    </section>
+    <section class="elements">
+<!--       для карточек-->
+    </section>
+    <section class="popup__image">
+        <!--   для popup img-->
+    </section>
+</main>
+<footer class="footer">
+    <p class="footer__title">© 2020 Mesto Russia</p>
+</footer>
+<div class="popup" id="popup_profile">
+    <div class="popup__body">
+        <button class="popup__close" type="button">
+            <img alt="Кнопка закрыть" class="popup__close-min" src="./images/icon/icon-close.svg">
+        </button>
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <form class="popup__form" name="edit-form" novalidate>
+            <input class="popup__input popup__input_str_name" id="profile__info-name" maxlength="80" minlength="1" name="user-name"
+                   placeholder="Имя"
+                   required size="10" type="text">
+            <input class="popup__input popup__input_str_jop" id="profile__info-job" maxlength="80" minlength="1" name="user-job"
+                   placeholder="Профессия"
+                   required size="10" type="text">
+            <button class="popup__button" type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<div class="popup" id="popup_card">
+    <div class="popup__body">
+        <button class="popup__close" id="popup__close_card" type="button">
+            <img alt="Кнопка закрыть" class="popup__close-min" src="./images/icon/icon-close.svg">
+        </button>
+        <h3 class="popup__title">Новое место</h3>
+        <form class="popup__form  popup__form_card" name="edit-form" novalidate>
+            <input class="popup__input popup__input_name" id="name-card" maxlength="80" minlength="1" name="name-card"
+                   placeholder="Название места"
+                   required size="10" type="text">
+            <input class="popup__input popup__input_url" id="url-card" maxlength="80" minlength="1" name="url-card"
+                   placeholder="Ссылка на картинку"
+                   required size="10" type="url">
+            <button class="popup__button" id="popup__button-card" type="submit" >Создать</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="popup" id="popup_img">
+    <div class="popup__image-windows">
+        <button class="popup__close" id="popup__close-card" type="button">
+            <img alt="Кнопка закрыть" class="popup__close-min" src="./images/icon/icon-close.svg">
+        </button>
+        <img alt="" class="popup__image-url" src="" >
+        <h3 class="popup__image-name"></h3>
+    </div>
+</div>
+
+<template id="element">
+    <div class="element">
+        <button class="element__delete"></button>
+        <img alt="" class="element__photo"
+             src="">
+        <div class="element__text">
+            <h2 class="element__title">название</h2>
+            <button class="element__smiley" type="button"></button>
+        </div>
+    </div>
+</template>
+
+<script src="./script.js"></script>
+</body>
+
+</html>

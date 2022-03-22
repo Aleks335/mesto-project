@@ -1,0 +1,12 @@
+.element__smiley{
+    width: 22px;
+    height: 19px;
+    border: none;
+    background: url("../../../images/smiley/smiley.svg") no-repeat center;
+    cursor: pointer;
+    padding: 0px 35px 0px 25px;
+    margin: 0;
+}
+.element__smiley:hover{
+     opacity: 0.5;
+ }
