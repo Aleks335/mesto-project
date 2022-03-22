@@ -51,7 +51,6 @@ const popupCard = document.getElementById('popup_card');
 const closeCard = document.getElementById('popup__close_card');
 const ButtonCard = document.getElementById('popup__button-card')
 
-
 // function popup Profile
 function openProfileForm(){
     popupProfile.classList.add('open__popup');
@@ -114,7 +113,6 @@ function cardsDisplay(initialCards) {
 }
 cardsDisplay(initialCards);
 
-
 ButtonCard.addEventListener("click", function (evt) {
     evt.preventDefault();//
     const cardForm = document.querySelector('.popup__form_card');
@@ -122,12 +120,9 @@ ButtonCard.addEventListener("click", function (evt) {
     const inputUrl = cardForm.querySelector('.popup__input_url').cloneNode(true);
     if ((inputName.value.length > 0) && (inputUrl.value.length > 0)){
         sectionElements.prepend(cardsCreate(inputUrl.value, inputName.value));
-        //closePopupCard();
+        closePopupCard();
     }
-
 })
-
-
 
 formElementProfile.addEventListener('submit', formSubmitHandler);
 popupButtonProfile.addEventListener('click', formSubmitHandler);
