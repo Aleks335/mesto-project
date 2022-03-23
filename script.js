@@ -32,27 +32,10 @@ const template = document.querySelector('#element').content;
 // function popup Profile
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    document.addEventListener('mousedown', inputEnter);
-    document.addEventListener('keydown', inputEscape);
 }
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
-}
-
-function inputEscape(evt) {
-    if (evt.key === 'Escape') {
-        const openedPopup = document.querySelector('.popup_opened');
-        cardForm.reset();
-        closePopup(openedPopup);
-    }
-}
-
-function inputEnter(evt) {
-    if (evt.key === 'Enter') {
-        const openedPopup = document.querySelector('.popup_opened');
-        closePopup(openedPopup);
-    }
 }
 
 function openProfileForm() {
@@ -113,13 +96,13 @@ function createCard(link, name) {
     return cardsElement;
 }
 
-function cardsDisplay(initialCards) {
+function renderInitialCards(initialCards) {
     initialCards.forEach((i) => {
         sectionElements.append(createCard(i.link, i.name));
     })
 }
 
-cardsDisplay(initialCards);
+renderInitialCards(initialCards);
 
 function handleCardFormSubmit(evt) {
     evt.preventDefault();//
