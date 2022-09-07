@@ -1,0 +1,21 @@
+.page{
+  font-family: "Inter", "Arial", "sans-serif";
+  background-color: #000000;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  text-rendering: optimizeLegibility;
+  margin: 0 45px;
+  padding: 0;
+}
+@media screen and (max-width: 900px){
+  .page{
+    margin-left: 19px;
+    margin-right: 19px;
+  }
+}
+@media screen and (max-width: 550px){
+  .page{
+    margin: 0 auto;
+  }
+}

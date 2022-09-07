@@ -1,0 +1,12 @@
+.element__photo{
+    width: 100%;
+    max-width: 282px;
+    height: 282px;
+    cursor: pointer;
+    border-radius: 10px 10px 0 0;
+    padding: 0;
+    margin: 0;
+}
+.element__photo:hover{
+    opacity: 0.5;
+}

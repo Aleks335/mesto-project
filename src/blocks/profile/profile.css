@@ -1,0 +1,32 @@
+.profile{
+    display: grid;
+    grid-template-areas:
+            "profile__content profile__info-name profile__edit profile__edit-add"
+            "profile__content profile__info-lob profile__edit profile__edit-add";
+    grid-template-columns: 150px 312px 1fr 1fr;
+    grid-template-rows: 72px 1fr;
+    padding: 0;
+    margin: 0;
+}
+@media screen and (max-width: 750px){
+    .profile{
+        grid-template-areas:
+            "profile__content profile__info-name profile__edit"
+            "profile__content profile__info-lob profile__edit"
+            "profile__edit-add profile__edit-add profile__edit-add";
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+@media screen and (max-width: 550px){
+    .profile{
+        grid-template-areas:
+                "profile__content profile__content profile__content"
+                "null profile__info-name profile__edit"
+                "profile__info-lob profile__info-lob profile__info-lob"
+                "profile__edit-add profile__edit-add profile__edit-add";
+        grid-template-columns: 1fr 208px 1fr;
+        grid-template-rows: 126px 1fr 1fr 63px;
+        max-width: 282px;
+    }
+}

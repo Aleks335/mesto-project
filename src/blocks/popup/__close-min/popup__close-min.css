@@ -1,0 +1,14 @@
+.popup__close-min{
+    width: 100%;
+    height: 100%;
+    background-image: url("../../../images/icon/icon-close.svg");
+    background-repeat: no-repeat;
+    padding: 15px;
+    margin: 0;
+}
+@media screen and (max-width: 550px){
+    .popup__close-min{
+        width: 45px;
+        height: 33px;
+    }
+}

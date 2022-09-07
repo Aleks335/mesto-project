@@ -1,0 +1,8 @@
+.popup__error_execute {
+    color: red;
+    opacity: 0;
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+}
