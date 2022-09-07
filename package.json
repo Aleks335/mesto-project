@@ -1,8 +1,8 @@
 {
   "name": "mesto-project",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/components/index.js",
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack serve",
