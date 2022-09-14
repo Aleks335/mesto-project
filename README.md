@@ -15,3 +15,6 @@ https://github.com/Aleks335/mesto-project.git
 
 ####Sprint-6
 https://www.figma.com/file/kRVLKwYG3d1HGLvh7JFWRT/JavaScript.-Sprint-6
+
+## web
+https://aleks335.github.io/mesto-project/
