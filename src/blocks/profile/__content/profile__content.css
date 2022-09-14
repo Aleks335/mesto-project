@@ -2,7 +2,9 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: url("../../../images/profile/avatar.jpg") center center no-repeat;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*background-image: url("../../../images/profile/avatar.jpg");*/
     border: none;
     background-size: cover;
     grid-area: profile__content;

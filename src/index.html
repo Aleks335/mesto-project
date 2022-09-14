@@ -14,7 +14,6 @@
 <main class="content">
     <section class="profile">
         <button class="profile__content"></button>
-<!--        <img alt="Фото Жак-Ив Кусто" class="profile__content" src="<%=require('../src/images/profile/avatar.jpg')%>">-->
         <h1 class="profile__info-name">Жак-Ив Кусто</h1>
         <p class="profile__info-lob">Исследователь океана</p>
         <button class="profile__edit" type="button"></button>
@@ -33,7 +32,7 @@
             <div class="popup__close-min"></div>
         </button>
         <h3 class="popup__title">Редактировать профиль</h3>
-        <form class="popup__form" name="edit-form" novalidate>
+        <form class="popup__form popup__form-edit" name="edit-form"  novalidate>
             <input class="popup__input popup__input_str_name" id="profile__info-name" maxlength="40" minlength="2"
                    name="user-name"
                    placeholder="Имя"
@@ -87,24 +86,22 @@
 </div>
 
 <!--аватар форм-->
-<div class="popup popup_card" id="popup_avatar" data-type="avatar">
+<div class="popup popup_avatar" id="popup_avatar" data-type="avatar">
     <div class="popup__body">
-        <button class="popup__close popup__close_card" id="popup__close_card" type="button">
+        <button class="popup__close popup__close_avatar" id="popup__close_avatar" type="button">
             <div class="popup__close-min"></div>
         </button>
         <h3 class="popup__title">Обновить аватар</h3>
-        <form class="popup__form  popup__form_card" name="edit-form" novalidate>
-            <input class="popup__input popup__input_url" id="url__card" maxlength="1000" minlength="2" name="url-card"
+        <form class="popup__form  popup__form_avatar" name="edit-form" novalidate>
+            <input class="popup__input popup__input_avatar" id="url__avatar" maxlength="1000" minlength="2" name="url-avatar"
                    placeholder="Ссылка на картинку"
                    required size="10" type="url">
-            <span class="popup__error" id="url__card-error"></span>
-            <button class="popup__button popup__button-disabled" disabled id="popup__button_card" type="submit">Создать
+            <span class="popup__error" id="url__avatar-error"></span>
+            <button class="popup__button popup__button-disabled" disabled id="popup__button_avatar" type="submit">Создать
             </button>
         </form>
     </div>
 </div>
-
-
 
 <div class="popup popup_img" id="popup_img" data-type="img">
     <div class="popup__image-windows">
@@ -118,12 +115,15 @@
 
 <template id="element">
     <div class="element">
-        <button class="element__delete"></button>
+<!--        <button class="element__delete"></button>-->
         <img alt="" class="element__photo"
              src="">
         <div class="element__text">
             <h2 class="element__title">название</h2>
-            <button class="element__smiley" type="button"></button>
+            <div class="element__container">
+                <button class="element__smiley" type="button"></button>
+                <span class="element__smiley-numbers">0</span>
+            </div>
         </div>
     </div>
 </template>

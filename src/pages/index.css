@@ -10,9 +10,14 @@
 @import url(../blocks/element/__smiley/_black/element__smiley_black.css);
 @import url(../blocks/element/__photo/element__photo.css);
 @import url(../blocks/element/__delete/element__delete.css);
+@import url(../blocks/element/__container/element__container.css);
+@import url(../blocks/element/__smiley/__smiley-numbers/element__smiley-numbers.css);
+
+
 
 /*============elements============*/
 @import url(../blocks/elements/elements.css);
+
 /*============footer============*/
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__title/footer__title.css);
