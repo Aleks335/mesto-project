@@ -135,22 +135,26 @@ enableValidation({
 function handleCardFormSubmit(evt, popup) {
     evt.preventDefault();//
     if ((inputName.value.length > 0) && (inputUrl.value.length > 0)) {
+        buttonDisabledCard.textContent='Сохранение...';
         createCardRequest(inputName.value, inputUrl.value).then((result) => {
             const cardElement = new Card(result.name, result.link, '#element', result.likes,
                 result.owner._id === profileID, result._id);
             cardElement.createCard(cardHandlers, profileID);
             sectionElements.prepend(cardElement.cardElement);
             findAndClosePopup(popup);
+            buttonDisabledCard.textContent='Создать';
         })
     }
 }
 
 function handleProfileEditFormSubmit(evt, popup) {
     evt.preventDefault();
+    buttonDisabledProfile.textContent='Сохранение...';
     updateProfile(inputProfileForm.value, inputAboutProfile.value)
         .then((result) => {
             renderProfile(result);
             findAndClosePopup(popup);
+            buttonDisabledProfile.textContent='Сохранить';
         }).catch((error) => {
         console.log(error)
     });
@@ -158,11 +162,13 @@ function handleProfileEditFormSubmit(evt, popup) {
 
 function handleAvatarEditFormSubmit(evt, popup) {
     evt.preventDefault();
+    buttonDisabledAvatar.textContent='Сохранение...';
     updateAvatar(inputAvatar.value)
         .then((result) => {
             console.log(result)
             renderProfile(result);
             findAndClosePopup(popup);
+            buttonDisabledAvatar.textContent='Создать';
         }).catch((error) => {
         console.log(error)
     });
