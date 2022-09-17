@@ -4,6 +4,9 @@ const fetchCards = async () => {
             authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
         }
     })
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
+
     const result = await request.json();
     return result;
 }
@@ -14,6 +17,9 @@ const fetchProfile = async () => {
             authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
         }
     })
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
+
     const result = await request.json();
     return result;
 }
@@ -30,6 +36,9 @@ const updateProfile = async (newName, newAbout) => {
             about: newAbout
         })
     });
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
+
     const result = await request.json();
     return result;
 }
@@ -46,6 +55,8 @@ const createCardRequest = async (name, link) => {
             link: link
         })
     });
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
     const result = await request.json();
     return result;
 }
@@ -57,6 +68,9 @@ const deleteCard = async (cardId) => {
             authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
         }
     })
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
+
     const result = await request.json();
     console.log(result);
     return result;
@@ -70,8 +84,9 @@ const deleteLike = async (cardId) => {
             authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
         }
     })
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
     const result = await request.json();
-    console.log(result);
     return result;
 }
 
@@ -82,6 +97,9 @@ const addLike = async (cardId) => {
             authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
         }
     })
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
+
     const result = await request.json();
     console.log(result);
     return result;
@@ -98,6 +116,9 @@ const updateAvatar = async (avatar) => {
             avatar: avatar
         })
     })
+    if (!request.ok)
+        return Promise.reject(`Ошибка: ${request.status}`);
+
     const result = await request.json();
     console.log(result);
     return result;

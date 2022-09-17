@@ -3,31 +3,43 @@
 import '../pages/index.css' //подключаем css
 import {Card} from "./Card";
 import {closePopup, openPopup,} from "./modal";
-import {cardForm} from "./utils";
+import {
+    avatarForm,
+    buttonDisabledAvatar,
+    buttonDisabledCard,
+    buttonDisabledProfile,
+    buttonEditProfile,
+    cardForm,
+    closeButtons,
+    editProfileForm,
+    inputAboutProfile,
+    inputAvatar,
+    inputName,
+    inputProfileForm,
+    inputUrl,
+    openCardProfile,
+    popupAvatar,
+    popupCard,
+    popupProfile,
+    profileAvatar,
+    profileJob,
+    profileName,
+    sectionElements,
+} from "./utils";
 import {enableValidation} from "./validate";
-import {createCardRequest, fetchCards, fetchProfile, updateAvatar, updateProfile} from "./API";
+import {
+    addLike,
+    createCardRequest,
+    deleteCard,
+    deleteLike,
+    fetchCards,
+    fetchProfile,
+    updateAvatar,
+    updateProfile,
+} from "./API";
+
 
 let profileID = null;
-const editProfileForm = document.querySelector('.popup__form-edit');
-const editNameProfile = document.querySelector('#profile__info-name');
-const profileName = document.querySelector('.profile__info-name');
-const profileJob = document.querySelector('.profile__info-lob');
-const editAboutProfile = document.querySelector('#profile__info-job');
-const popupCard = document.querySelector('.popup_card');
-const popupProfile = document.querySelector('.popup_profile');
-const editProfile = document.querySelector('.profile__edit');
-const openCardProfile = document.querySelector('.profile__add-button');
-const inputName = cardForm.querySelector('.popup__input_name');
-const inputUrl = cardForm.querySelector('.popup__input_url');
-const sectionElements = document.querySelector('.elements');
-const closeButtons = document.querySelectorAll('.popup__close-min');
-const buttonDisabledCard = document.querySelector('#popup__button_card');
-const buttonDisabledProfile = document.querySelector('#popup__button_profile');
-const buttonDisabledAvatar = document.querySelector('#popup__button_avatar');
-const profileAvatar = document.querySelector('.profile__content')
-const popupAvatar = document.querySelector('#popup_avatar');
-const avatarForm = document.querySelector('.popup__form_avatar');
-const inputAvatar = document.querySelector('.popup__input_avatar');
 
 
 function findAndClosePopup(popup) {
@@ -48,35 +60,61 @@ function findAndClosePopup(popup) {
             avatarForm.reset();
             break;
     }
-
 }
 
 closeButtons.forEach((item) => {
-    item.addEventListener('click', () => findAndClosePopup(item.closest('.popup')));
+    item.addEventListener('click', () =>
+        findAndClosePopup(item.closest('.popup')));
 });
+
+const cardDeleteCardHandler = (card, evt) => {
+    deleteCard(card.cardID).then(() => {
+        evt.target.closest('.element').remove();
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+
+const cardDeleteLikeHandler = (card, evt) => {
+    deleteLike(card.cardID).then(() => {
+        card.decLike(evt);
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+
+const cardAddLikeHandler = (card, evt) => {
+    addLike(card.cardID).then(() => {
+        card.incLike(evt);
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+
+const cardHandlers = {
+    cardAddLikeHandler,
+    cardDeleteLikeHandler,
+    cardDeleteCardHandler
+}
+
 
 fetchProfile().then((result) => {
     profileID = result._id;
     renderProfile(result);
 }).then(() => {
     fetchCards().then((result) => {
-        console.log(result);
         result.forEach((item) => {
-            const cardElement = new Card(item.name, item.link, '#element', item.likes.length,
-                item.owner._id === profileID, item._id, isCardLiked(item.likes));
+            const cardElement = new Card(item.name, item.link, '#element', item.likes,
+                item.owner._id === profileID, item._id);
+            cardElement.createCard(cardHandlers, profileID);
             sectionElements.append(cardElement.cardElement);
         });
     })
+}).catch((error) => {
+    console.log(error);
 });
 
-function isCardLiked(likes) {
-    let isLiked = false;
-    likes.forEach((item) => {
-        if (item._id === profileID)
-            isLiked = true
-    })
-    return isLiked;
-}
+
 
 function renderProfile(profileObject) {
     profileAvatar.style.backgroundImage = `url(${profileObject.avatar})`;
@@ -98,8 +136,9 @@ function handleCardFormSubmit(evt, popup) {
     evt.preventDefault();//
     if ((inputName.value.length > 0) && (inputUrl.value.length > 0)) {
         createCardRequest(inputName.value, inputUrl.value).then((result) => {
-            const cardElement = new Card(result.name, result.link, '#element', result.likes.length,
-                result.owner._id === profileID, result.owner._id, isCardLiked(result.likes));
+            const cardElement = new Card(result.name, result.link, '#element', result.likes,
+                result.owner._id === profileID, result._id);
+            cardElement.createCard(cardHandlers, profileID);
             sectionElements.prepend(cardElement.cardElement);
             findAndClosePopup(popup);
         })
@@ -108,7 +147,7 @@ function handleCardFormSubmit(evt, popup) {
 
 function handleProfileEditFormSubmit(evt, popup) {
     evt.preventDefault();
-    updateProfile(editNameProfile.value, editAboutProfile.value)
+    updateProfile(inputProfileForm.value, inputAboutProfile.value)
         .then((result) => {
             renderProfile(result);
             findAndClosePopup(popup);
@@ -145,9 +184,9 @@ editProfileForm.addEventListener('submit', (e) => handleProfileEditFormSubmit(e,
 avatarForm.addEventListener('submit', (e) => handleAvatarEditFormSubmit(e, popupAvatar));
 
 
-editProfile.addEventListener('click', () => {
-    editNameProfile.value = profileName.textContent;
-    editAboutProfile.value = profileJob.textContent;
+buttonEditProfile.addEventListener('click', () => {
+    inputProfileForm.value = profileName.textContent;
+    inputAboutProfile.value = profileJob.textContent;
     openPopup(popupProfile);
 });
 
