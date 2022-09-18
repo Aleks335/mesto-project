@@ -4,27 +4,27 @@ import '../pages/index.css' //подключаем css
 import {Card} from "./Card";
 import {closePopup, openPopup,} from "./modal";
 import {
-    avatarForm,
-    buttonDisabledAvatar,
-    buttonDisabledCard,
-    buttonDisabledProfile,
+    buttonEditAvatar,
     buttonEditProfile,
-    cardForm,
-    closeButtons,
-    editProfileForm,
-    inputAboutProfile,
-    inputAvatar,
-    inputName,
+    buttonOpenCard,
+    buttonsCloseForm,
+    buttonSubmitAvatar,
+    buttonSubmitCard,
+    buttonSubmitProfile,
+    formAvatar,
+    formCard,
+    formEditProfile,
+    inputAvatarUrl,
+    inputCardName,
+    inputCardUrl,
+    inputProfileAbout,
     inputProfileForm,
-    inputUrl,
-    openCardProfile,
     popupAvatar,
     popupCard,
     popupProfile,
-    profileAvatar,
-    profileJob,
-    profileName,
     sectionElements,
+    textProfileJob,
+    textProfileName,
 } from "./utils";
 import {enableValidation} from "./validate";
 import {
@@ -46,23 +46,23 @@ function findAndClosePopup(popup) {
     closePopup(popup);
     switch (popup.dataset.type) {
         case "profile":
-            buttonDisabledProfile.classList.add('popup__button-disabled');
-            buttonDisabledProfile.setAttribute("disabled", true);
+            buttonSubmitProfile.classList.add('popup__button-disabled');
+            buttonSubmitProfile.setAttribute("disabled", true);
             break;
         case "card":
-            buttonDisabledCard.classList.add('popup__button-disabled');
-            buttonDisabledCard.setAttribute("disabled", true);
-            cardForm.reset();
+            buttonSubmitCard.classList.add('popup__button-disabled');
+            buttonSubmitCard.setAttribute("disabled", true);
+            formCard.reset();
             break;
         case "avatar":
-            buttonDisabledAvatar.classList.add('popup__button-disabled');
-            buttonDisabledAvatar.setAttribute("disabled", true);
-            avatarForm.reset();
+            buttonSubmitAvatar.classList.add('popup__button-disabled');
+            buttonSubmitAvatar.setAttribute("disabled", true);
+            formAvatar.reset();
             break;
     }
 }
 
-closeButtons.forEach((item) => {
+buttonsCloseForm.forEach((item) => {
     item.addEventListener('click', () =>
         findAndClosePopup(item.closest('.popup')));
 });
@@ -91,10 +91,16 @@ const cardAddLikeHandler = (card, evt) => {
     })
 };
 
-const cardHandlers = {
-    cardAddLikeHandler,
-    cardDeleteLikeHandler,
-    cardDeleteCardHandler
+
+function createCardObj(item) {
+    const cardHandlers = {
+        cardAddLikeHandler,
+        cardDeleteLikeHandler,
+        cardDeleteCardHandler
+    }
+    const cardElement = new Card(item.name, item.link, '#element', item.likes,
+        item.owner._id === profileID, item._id);
+    return cardElement.createCard(cardHandlers, profileID);
 }
 
 
@@ -104,10 +110,7 @@ fetchProfile().then((result) => {
 }).then(() => {
     fetchCards().then((result) => {
         result.forEach((item) => {
-            const cardElement = new Card(item.name, item.link, '#element', item.likes,
-                item.owner._id === profileID, item._id);
-            cardElement.createCard(cardHandlers, profileID);
-            sectionElements.append(cardElement.cardElement);
+            sectionElements.append(createCardObj(item));
         });
     })
 }).catch((error) => {
@@ -117,9 +120,9 @@ fetchProfile().then((result) => {
 
 
 function renderProfile(profileObject) {
-    profileAvatar.style.backgroundImage = `url(${profileObject.avatar})`;
-    profileName.textContent = profileObject.name;
-    profileJob.textContent = profileObject.about;
+    buttonEditAvatar.style.backgroundImage = `url(${profileObject.avatar})`;
+    textProfileName.textContent = profileObject.name;
+    textProfileJob.textContent = profileObject.about;
 }
 
 enableValidation({
@@ -134,43 +137,45 @@ enableValidation({
 
 function handleCardFormSubmit(evt, popup) {
     evt.preventDefault();//
-    if ((inputName.value.length > 0) && (inputUrl.value.length > 0)) {
-        buttonDisabledCard.textContent='Сохранение...';
-        createCardRequest(inputName.value, inputUrl.value).then((result) => {
-            const cardElement = new Card(result.name, result.link, '#element', result.likes,
-                result.owner._id === profileID, result._id);
-            cardElement.createCard(cardHandlers, profileID);
-            sectionElements.prepend(cardElement.cardElement);
+    if ((inputCardName.value.length > 0) && (inputCardUrl.value.length > 0)) {
+        buttonSubmitCard.textContent = 'Сохранение...';
+        createCardRequest(inputCardName.value, inputCardUrl.value).then((result) => {
+            sectionElements.prepend(createCardObj(result));
             findAndClosePopup(popup);
-            buttonDisabledCard.textContent='Создать';
+        }).catch((error) => {
+            console.log(error);
+        }).finally(() => {
+            buttonSubmitCard.textContent = 'Создать';
         })
     }
 }
 
 function handleProfileEditFormSubmit(evt, popup) {
     evt.preventDefault();
-    buttonDisabledProfile.textContent='Сохранение...';
-    updateProfile(inputProfileForm.value, inputAboutProfile.value)
+    buttonSubmitProfile.textContent = 'Сохранение...';
+    updateProfile(inputProfileForm.value, inputProfileAbout.value)
         .then((result) => {
             renderProfile(result);
             findAndClosePopup(popup);
-            buttonDisabledProfile.textContent='Сохранить';
         }).catch((error) => {
         console.log(error)
+    }).finally(() => {
+        buttonSubmitProfile.textContent = 'Сохранить';
     });
 }
 
 function handleAvatarEditFormSubmit(evt, popup) {
     evt.preventDefault();
-    buttonDisabledAvatar.textContent='Сохранение...';
-    updateAvatar(inputAvatar.value)
+    buttonSubmitAvatar.textContent = 'Сохранение...';
+    updateAvatar(inputAvatarUrl.value)
         .then((result) => {
             console.log(result)
             renderProfile(result);
             findAndClosePopup(popup);
-            buttonDisabledAvatar.textContent='Создать';
         }).catch((error) => {
         console.log(error)
+    }).finally(() => {
+        buttonSubmitAvatar.textContent = 'Создать';
     });
 }
 
@@ -183,22 +188,22 @@ Array.from(document.querySelectorAll('.popup')).forEach((popup) => {
 })
 
 
-cardForm.addEventListener('submit', (e) => handleCardFormSubmit(e, popupCard));
+formCard.addEventListener('submit', (e) => handleCardFormSubmit(e, popupCard));
 
-editProfileForm.addEventListener('submit', (e) => handleProfileEditFormSubmit(e, popupProfile));
+formEditProfile.addEventListener('submit', (e) => handleProfileEditFormSubmit(e, popupProfile));
 
-avatarForm.addEventListener('submit', (e) => handleAvatarEditFormSubmit(e, popupAvatar));
+formAvatar.addEventListener('submit', (e) => handleAvatarEditFormSubmit(e, popupAvatar));
 
 
 buttonEditProfile.addEventListener('click', () => {
-    inputProfileForm.value = profileName.textContent;
-    inputAboutProfile.value = profileJob.textContent;
+    inputProfileForm.value = textProfileName.textContent;
+    inputProfileAbout.value = textProfileJob.textContent;
     openPopup(popupProfile);
 });
 
-openCardProfile.addEventListener('click', () => openPopup(popupCard));
+buttonOpenCard.addEventListener('click', () => openPopup(popupCard));
 
-profileAvatar.addEventListener('click', () => openPopup(popupAvatar));
+buttonEditAvatar.addEventListener('click', () => openPopup(popupAvatar));
 
 export {
     enableValidation,

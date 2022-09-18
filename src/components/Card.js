@@ -32,6 +32,7 @@ class Card {
             this.toggleLike(cardElement.querySelector('.element__smiley'))
         this.cardElement = cardElement;
         this.setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton);
+        return this.cardElement;
     }
 
     isCardLiked(profileID) {
