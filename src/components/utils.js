@@ -20,7 +20,11 @@ const popupAvatar = document.querySelector('#popup_avatar');
 const formAvatar = document.querySelector('.popup__form_avatar');
 const inputAvatarUrl = document.querySelector('.popup__input_avatar');
 const popupImageUrl = document.querySelector('.popup__image-url');
-const popupImageName = document.querySelector('.popup__image-name')
+const popupImageName = document.querySelector('.popup__image-name');
+const popupNameInput = document.querySelector('.popup__input_str_name');
+const popupInputJob = document.querySelector('.popup__input_str_jop')
+
+
 
 export {
     formCard,
@@ -45,5 +49,7 @@ export {
     formAvatar,
     inputAvatarUrl,
     popupImageUrl,
-    popupImageName
+    popupImageName,
+    popupNameInput,
+    popupInputJob
 }

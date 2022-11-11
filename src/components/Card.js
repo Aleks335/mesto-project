@@ -1,5 +1,3 @@
-import {openPopup} from "./modal";
-
 class Card {
     constructor(name, link, templateSelector, likes, isOwner, cardID) {
         this._name = name;

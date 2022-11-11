@@ -150,7 +150,7 @@ export {
   updateAvatar,
 }; */
 
-class API {
+export class Api {
   constructor({ baseUrl, authorization}) {
     this.baseUrl = baseUrl;
     this.authorization = authorization;
@@ -291,11 +291,29 @@ class API {
     return result;
   }
 
+
+  cardDeleteCardHandler(card, evt){
+    this.deleteCard(card.cardID).then(() => {
+        evt.target.closest('.element').remove();
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+
+  cardDeleteLikeHandler(card, evt){
+  this.deleteLike(card.cardID).then(() => {
+      card.decLike(evt);
+  }).catch((error) => {
+      console.log(error);
+  })
+};
+
+cardAddLikeHandler(card, evt){
+  this.addLike(card.cardID).then(() => {
+      card.incLike(evt);
+  }).catch((error) => {
+      console.log(error);
+  })
+};
+
 }
-
-let api = new API({
-  baseUrl: "https://nomoreparties.co/v1/plus-cohort-16",
-  authorization: "dec5d51c-e797-4698-837e-5a0bd4b0f1d8",
-});
-
-console.log(api);

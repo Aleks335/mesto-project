@@ -2,7 +2,14 @@
 
 import '../pages/index.css' //подключаем css
 import {Card} from "./Card";
-import {closePopup, openPopup,} from "./modal";
+import {PopupWithForm} from "./PopupWithForm";
+import {PopupWithImage} from "./PopupWithImage";
+import {FormValidator} from "./FormValidator";
+import {Api} from "./API";
+import {UserInfo} from "./UserInfo";
+import {Section} from "./Section";
+
+
 import {
     buttonEditAvatar,
     buttonEditProfile,
@@ -25,21 +32,82 @@ import {
     sectionElements,
     textProfileJob,
     textProfileName,
+    popupNameInput,
+    popupInputJob
 } from "./utils";
-import {enableValidation} from "./validate";
-import {
-    addLike,
-    createCardRequest,
-    deleteCard,
-    deleteLike,
-    fetchCards,
-    fetchProfile,
-    updateAvatar,
-    updateProfile,
-} from "./API";
+
+function hideError(input){
+    const spanError = document.querySelector("#" + input.id + "-error");
+          spanError.textContent = "";
+          spanError.classList.remove(this.errorClass);
+          spanError.textContent = "";
+  }
+// Ниже перенести в API 
+const cardDeleteCardHandler = (card, evt) => {
+    api.deleteCard(card._cardID).then(() => {
+        evt.target.closest('.element').remove();
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+
+const cardDeleteLikeHandler = (card, evt) => {
+    api.deleteLike(card._cardID).then(() => {
+        card.decLike(evt);
+    }).catch((error) => {
+        console.log(error);
+    })
+};
+
+const cardAddLikeHandler = (card, evt) => {
+    api.addLike(card._cardID).then(() => {
+        card.incLike(evt);
+    }).catch((error) => {
+        console.log(error);
+    })
+}; 
+
+// Выше перенести в Api
+
+const api = new Api({authorization: "dec5d51c-e797-4698-837e-5a0bd4b0f1d8", baseUrl: "https://nomoreparties.co/v1/plus-cohort-16"});
+let cardsSection;
 
 
-let profileID = null;
+// Отрисовка карточек//
+Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
+    console.log(result[0])
+    cardsSection = new Section({items: result[1], render: function(item){
+        let cardConstruct = new Card(item.name, item.link, "#element", item.likes, false, item._id);
+        let card = cardConstruct.createCard({
+            cardDeleteCardHandler,
+            cardAddLikeHandler,
+            cardDeleteLikeHandler
+        }, result[0]._id)
+        cardsSection.addItem(card)
+    }}, ".elements")
+
+    cardsSection.renderItems()
+})
+
+// Форма изменения данных профиля//
+
+const userInfo = new UserInfo(".profile__info-name",".profile__info-lob","profile__content")
+
+const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{api.updateProfile.call(api, popupNameInput.value, popupInputJob.value)}, hideError)
+const profilePopupValidation = new FormValidator({
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button-disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_execute',
+    spanError: '-error',
+}, formEditProfile)
+    profilePopupValidation.validateForm();
+
+  profilePopupSpecimen.setEventListeners()
+  buttonEditProfile.addEventListener("click", ()=>{profilePopupSpecimen.open()})
+
+/*let profileID = null;
 ///// пока просто вызвал
 const profileInfo = new UserInfo (constant.selectors);
 ///
@@ -209,4 +277,4 @@ buttonEditAvatar.addEventListener('click', () => openPopup(popupAvatar));
 
 export {
     enableValidation,
-}
+} */
