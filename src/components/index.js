@@ -40,7 +40,9 @@ import {
 
 
 let profileID = null;
-
+///// пока просто вызвал
+const profileInfo = new UserInfo (constant.selectors);
+///
 
 function findAndClosePopup(popup) {
     closePopup(popup);
