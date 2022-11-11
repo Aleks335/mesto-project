@@ -19,6 +19,8 @@ const buttonEditAvatar = document.querySelector('.profile__content');
 const popupAvatar = document.querySelector('#popup_avatar');
 const formAvatar = document.querySelector('.popup__form_avatar');
 const inputAvatarUrl = document.querySelector('.popup__input_avatar');
+const popupImageUrl = document.querySelector('.popup__image-url');
+const popupImageName = document.querySelector('.popup__image-name')
 
 export {
     formCard,
@@ -42,4 +44,6 @@ export {
     popupAvatar,
     formAvatar,
     inputAvatarUrl,
+    popupImageUrl,
+    popupImageName
 }
