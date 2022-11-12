@@ -70,12 +70,14 @@ const cardAddLikeHandler = (card, evt) => {
 // Выше перенести в Api
 
 const api = new Api({authorization: "dec5d51c-e797-4698-837e-5a0bd4b0f1d8", baseUrl: "https://nomoreparties.co/v1/plus-cohort-16"});
+const userInfo = new UserInfo({profileTitle: ".profile__info-name", profileJob: ".profile__info-lob", profileAvatar: ".profile__content"})
 let cardsSection;
 
 
 // Отрисовка карточек//
 Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
-    console.log(result[0])
+    userInfo.setUserInfo({name: result[0].name, about: result[0].about})
+    userInfo.setUserAvatar({avatar: result[0].avatar})
     cardsSection = new Section({items: result[1], render: function(item){
         let cardConstruct = new Card(item.name, item.link, "#element", item.likes, false, item._id);
         let card = cardConstruct.createCard({
@@ -93,7 +95,14 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
 
 // const userInfo = new UserInfo(".profile__info-name",".profile__info-lob","profile__content")
 
-const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{api.updateProfile.call(api, popupNameInput.value, popupInputJob.value)}, hideError)
+const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{api.updateProfile.call(api, popupNameInput.value, popupInputJob.value).then((result)=>{
+    userInfo.setUserInfo(result)
+})}, hideError, 
+()=>{
+    let info = userInfo.getUserInfo();
+    popupNameInput.value = info.name;
+    popupInputJob.value = info.about;
+})
 
 const profilePopupValidation = new FormValidator({
     inputSelector: '.popup__input',

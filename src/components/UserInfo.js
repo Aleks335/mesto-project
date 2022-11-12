@@ -1,6 +1,6 @@
 // Отвечает за управление информацией о пользователе на странице
 export class UserInfo {
-    constructor({profileTitle, profileJob, profileAvatar}, getUserInfoCallback, setUserInfoCallback) {
+    constructor({profileTitle, profileJob, profileAvatar}) {
         this._profileTitle = document.querySelector(profileTitle);
         this._profileJob = document.querySelector(profileJob);
         this._profileAvatar = document.querySelector(profileAvatar);
@@ -18,7 +18,6 @@ export class UserInfo {
 //Метод принимает новые данные пользователя, отправляет их на сервер и добавляет их на страницу
     setUserInfo = ({name, about}) => {
         //Принимает новые значения
-        setUserInfoCallback(name,about)
         this._name = name;
         this._about = about;
         this._profileTitle.textContent = this._name;
@@ -27,6 +26,6 @@ export class UserInfo {
 
     setUserAvatar = ({avatar}) => {
         this._avatar = avatar;
-        this._profileAvatar.src = this._avatar;
+        this._profileAvatar.style.backgroundImage = `url(${this._avatar})`;
     };
 }
