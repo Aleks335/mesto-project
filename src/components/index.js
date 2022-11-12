@@ -81,13 +81,14 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
     userInfo.setUserInfo({name: result[0].name, about: result[0].about})
     userInfo.setUserAvatar({avatar: result[0].avatar})
     cardsSection = new Section({items: result[1], render: function(item){
-        let cardConstruct = new Card(item.name, item.link, "#element", item.likes, false, item._id);
+        let isMine = item.owner._id == result[0]._id;
+        let cardConstruct = new Card(item.name, item.link, "#element", item.likes, isMine, item._id);
         let card = cardConstruct.createCard({
             cardDeleteCardHandler,
             cardAddLikeHandler,
             cardDeleteLikeHandler
         }, result[0]._id, (src, text)=>{imagePopupSpecimen.open(src, text)})
-        cardsSection.addItem(card)
+        cardsSection.appendItem(card)
     }}, ".elements")
 
     cardsSection.renderItems()

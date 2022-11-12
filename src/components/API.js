@@ -287,25 +287,4 @@ export class Api {
     console.log(result);
     return result;
   }
-  cardDeleteCardHandler(card, evt){
-    this.deleteCard(card.cardID).then(() => {
-        evt.target.closest('.element').remove();
-    }).catch((error) => {
-        console.log(error);
-    })
-};
-  cardDeleteLikeHandler(card, evt){
-  this.deleteLike(card.cardID).then(() => {
-      card.decLike(evt);
-  }).catch((error) => {
-      console.log(error);
-  })
-};
-  cardAddLikeHandler(card, evt){
-  this.addLike(card.cardID).then(() => {
-      card.incLike(evt);
-  }).catch((error) => {
-      console.log(error);
-  })
-};
 }

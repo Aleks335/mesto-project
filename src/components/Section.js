@@ -5,7 +5,11 @@ export class Section{
         this.parentElement = document.querySelector(contSelector);
     }
 
-    addItem(item){
+    appendItem(item){
+        this.parentElement.append(item)
+    }
+
+    prependItem(item){
         this.parentElement.prepend(item)
     }
 
