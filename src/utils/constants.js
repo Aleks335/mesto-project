@@ -4,10 +4,3 @@ export const selectors = {
     profileJob: '.profile__info-lob',
     profileAvatar: '.profile__content'
 }
-//
-// //Селекторы кнопок
-// export const buttons = {
-//     profile: document.querySelector('.profile__edit'),
-//     card: document.querySelector('.profile__add-button'),
-//     avatar: document.querySelector('.profile__content')
-// }
