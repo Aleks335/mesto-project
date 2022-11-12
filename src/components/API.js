@@ -237,7 +237,6 @@ export class Api {
     console.log(result);
     return result;
   }
-
   async deleteLike(cardId){
     const request = await fetch(
       `${this.baseUrl}/cards/likes/${cardId}`,
@@ -252,7 +251,6 @@ export class Api {
     const result = await request.json();
     return result;
   }
-
   async addLike(cardId){
     const request = await fetch(
       `${this.baseUrl}/cards/likes/${cardId}`,
@@ -269,7 +267,6 @@ export class Api {
     console.log(result);
     return result;
   }
-
   async updateAvatar(avatar){
     const request = await fetch(
       `${this.baseUrl}/users/me/avatar/`,
@@ -290,8 +287,6 @@ export class Api {
     console.log(result);
     return result;
   }
-
-
   cardDeleteCardHandler(card, evt){
     this.deleteCard(card.cardID).then(() => {
         evt.target.closest('.element').remove();
@@ -299,7 +294,6 @@ export class Api {
         console.log(error);
     })
 };
-
   cardDeleteLikeHandler(card, evt){
   this.deleteLike(card.cardID).then(() => {
       card.decLike(evt);
@@ -307,13 +301,11 @@ export class Api {
       console.log(error);
   })
 };
-
-cardAddLikeHandler(card, evt){
+  cardAddLikeHandler(card, evt){
   this.addLike(card.cardID).then(() => {
       card.incLike(evt);
   }).catch((error) => {
       console.log(error);
   })
 };
-
 }

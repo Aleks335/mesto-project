@@ -9,7 +9,6 @@ import {Api} from "./API";
 import {UserInfo} from "./UserInfo";
 import {Section} from "./Section";
 
-
 import {
     buttonEditAvatar,
     buttonEditProfile,
@@ -35,6 +34,7 @@ import {
     popupNameInput,
     popupInputJob
 } from "./utils";
+import {buttons} from "../utils/constants";
 
 function hideError(input){
     const spanError = document.querySelector("#" + input.id + "-error");
@@ -91,9 +91,10 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
 
 // Форма изменения данных профиля//
 
-const userInfo = new UserInfo(".profile__info-name",".profile__info-lob","profile__content")
+// const userInfo = new UserInfo(".profile__info-name",".profile__info-lob","profile__content")
 
 const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{api.updateProfile.call(api, popupNameInput.value, popupInputJob.value)}, hideError)
+
 const profilePopupValidation = new FormValidator({
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__button',
@@ -104,8 +105,18 @@ const profilePopupValidation = new FormValidator({
 }, formEditProfile)
     profilePopupValidation.validateForm();
 
+const CardPopupSpecimen = new PopupWithForm('.popup_card', ()=>{api.createCardRequest.call(api, inputCardName.value, inputCardUrl.value)}, hideError);
+
+const AvatarPopupSpecimen = new PopupWithForm('.popup_avatar', ()=>{api.updateAvatar.call(api, inputAvatarUrl.value)}, hideError);
+
   profilePopupSpecimen.setEventListeners()
-  buttonEditProfile.addEventListener("click", ()=>{profilePopupSpecimen.open()})
+
+  buttonEditProfile.addEventListener("click", ()=>{profilePopupSpecimen.open()});
+
+  buttonOpenCard.addEventListener("click", ()=>{CardPopupSpecimen.open()});
+
+  buttonEditAvatar.addEventListener('click',()=>{AvatarPopupSpecimen.open()})
+
 
 /*let profileID = null;
 ///// пока просто вызвал
