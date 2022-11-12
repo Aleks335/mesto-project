@@ -5,6 +5,7 @@ const textProfileName = document.querySelector('.profile__info-name');
 const textProfileJob = document.querySelector('.profile__info-lob');
 const inputProfileAbout = document.querySelector('#profile__info-job');
 const popupCard = document.querySelector('.popup_card');
+const imagePopup = document.querySelector('.popup_img');
 const popupProfile = document.querySelector('.popup_profile');
 const buttonEditProfile = document.querySelector('.profile__edit');
 const buttonOpenCard = document.querySelector('.profile__add-button');
@@ -22,7 +23,7 @@ const inputAvatarUrl = document.querySelector('.popup__input_avatar');
 const popupImageUrl = document.querySelector('.popup__image-url');
 const popupImageName = document.querySelector('.popup__image-name');
 const popupNameInput = document.querySelector('.popup__input_str_name');
-const popupInputJob = document.querySelector('.popup__input_str_jop')
+const popupInputJob = document.querySelector('.popup__input_str_jop');
 
 
 
@@ -51,5 +52,6 @@ export {
     popupImageUrl,
     popupImageName,
     popupNameInput,
-    popupInputJob
+    popupInputJob,
+    imagePopup
 }

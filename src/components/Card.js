@@ -9,7 +9,7 @@ class Card {
         this._cardID = cardID;
     }
 
-    createCard(cardHandlers, profileID) {
+    createCard(cardHandlers, profileID, openPopupCallback) {
         const template = document.querySelector(this._templateSelector).content;
         const cardElement = template.querySelector(".element").cloneNode(true);
         const popupImg = document.querySelector('.popup_img');
@@ -29,7 +29,7 @@ class Card {
         if (this.isLiked)
             this._toggleLike(cardElement.querySelector('.element__smiley'))
         this.cardElement = cardElement;
-        this._setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton);
+        this._setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton, openPopupCallback);
         return this.cardElement;
     }
 
@@ -61,17 +61,14 @@ class Card {
     }
 
 
-    _setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton = null) {
+    _setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton = null, openPopupCallback) {
         if (removeButton)
             removeButton.addEventListener('click', (evt) => {
                 cardHandlers.cardDeleteCardHandler(this, evt);
             });
 
         elementPhoto.addEventListener('click', () => {
-            popupImageUrl.src = this._link;
-            popupImageUrl.alt = this._name;
-            popupImg.querySelector('.popup__image-name').textContent = this._name;
-            openPopup(popupImg);
+            openPopupCallback(this._link, this._name);
         })
         cardElement.querySelector('.element__smiley').addEventListener('click', (evt) => {
             console.log(this.isLiked)

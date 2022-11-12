@@ -37,10 +37,12 @@ import {
 import {buttons} from "../utils/constants";
 
 function hideError(input){
-    const spanError = document.querySelector("#" + input.id + "-error");
+    setTimeout(()=>{
+        const spanError = document.querySelector("#" + input.id + "-error");
           spanError.textContent = "";
           spanError.classList.remove(this.errorClass);
           spanError.textContent = "";
+    },500)
   }
 // Ниже перенести в API 
 const cardDeleteCardHandler = (card, evt) => {
@@ -84,7 +86,7 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
             cardDeleteCardHandler,
             cardAddLikeHandler,
             cardDeleteLikeHandler
-        }, result[0]._id)
+        }, result[0]._id, (src, text)=>{imagePopupSpecimen.open(src, text)})
         cardsSection.addItem(card)
     }}, ".elements")
 
@@ -95,9 +97,12 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
 
 // const userInfo = new UserInfo(".profile__info-name",".profile__info-lob","profile__content")
 
-const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{api.updateProfile.call(api, popupNameInput.value, popupInputJob.value).then((result)=>{
+const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{
+    api.updateProfile.call(api, popupNameInput.value, popupInputJob.value).then((result)=>{
     userInfo.setUserInfo(result)
-})}, hideError, 
+    profilePopupSpecimen.close();
+})
+}, hideError, 
 ()=>{
     let info = userInfo.getUserInfo();
     popupNameInput.value = info.name;
@@ -125,6 +130,13 @@ const AvatarPopupSpecimen = new PopupWithForm('.popup_avatar', ()=>{api.updateAv
   buttonOpenCard.addEventListener("click", ()=>{CardPopupSpecimen.open()});
 
   buttonEditAvatar.addEventListener('click',()=>{AvatarPopupSpecimen.open()})
+
+
+  // imagePopup
+
+  const imagePopupSpecimen = new PopupWithImage(".popup_img")
+
+  imagePopupSpecimen.setEventListeners();
 
 
 /*let profileID = null;

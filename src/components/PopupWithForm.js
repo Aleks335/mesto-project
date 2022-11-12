@@ -10,22 +10,21 @@ export class PopupWithForm extends Popup {
         this.preparePopupMethod = preparePopupMethod;
     }
 
-    setEventListeners(){
-        super.setEventListeners()
-        const [firstInput,secondInput] = this.inputsList;
-        this.form.addEventListener("submit",(evt)=>{
-            evt.preventDefault()
-            this.apiMethod(firstInput.value, secondInput.value);
-            this.close()
-        })
+    _handleEscClose(evt){
+        if (evt.key === 'Escape') {
+            this.popup.classList.remove('popup_opened');
+            this.inputsList.forEach(element => {
+                this.hideErrorMethod(element)
+            });
     }
+}
 
     close(){
         super.close()
         this.inputsList.forEach(element => {
             this.hideErrorMethod(element)
         });
-        this.form.reset()
+        setTimeout(()=>this.form.reset(), 500)
     }
 
     open(){
@@ -33,5 +32,15 @@ export class PopupWithForm extends Popup {
             this.preparePopupMethod()
         }
         super.open()
+    }
+
+
+    setEventListeners(){
+        super.setEventListeners()
+        const [firstInput,secondInput] = this.inputsList;
+        this.form.addEventListener("submit",(evt)=>{
+            evt.preventDefault()
+            this.apiMethod(firstInput.value, secondInput.value);
+        })
     }
 }
