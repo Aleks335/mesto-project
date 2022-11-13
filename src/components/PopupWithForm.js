@@ -54,7 +54,10 @@ export class PopupWithForm extends Popup {
         this.form.addEventListener("submit",(evt)=>{
             evt.preventDefault();
             this._setButtonLoadState();
-            this.apiMethod(firstInput.value, secondInput.value);
+            console.log(firstInput.value)
+            secondInput ?
+            this.apiMethod(firstInput.value, secondInput.value):
+            this.apiMethod(firstInput.value)
         })
     }
 }

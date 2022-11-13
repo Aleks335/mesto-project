@@ -49,9 +49,7 @@ export class FormValidator {
 
   showInputsErrors(){
     const popupInputs = this.formElement.querySelectorAll(this.inputSelector);
-    console.dir(popupInputs);
     popupInputs.forEach((i) => {
-      console.log(i)
       i.addEventListener("input", () => {
         if (!i.validity.valid) {
           this._showErrorMessage(i)
@@ -60,6 +58,14 @@ export class FormValidator {
         }
       });
     });
+  }
+
+  disableButton(){
+    const submitButton = this.formElement.querySelector(
+      this.submitButtonSelector
+    );
+    submitButton.disabled = true;
+    submitButton.classList.add(this.inactiveButtonClass)
   }
 
   validateForm() {

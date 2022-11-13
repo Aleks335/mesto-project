@@ -12,7 +12,7 @@ export class Popup{
 
     setEventListeners(){
         const removeButton = this.popup.querySelector('.popup__close-min')
-        this.popup.addEventListener("click",(evt)=>{
+        this.popup.addEventListener("mousedown",(evt)=>{
             if(evt.target === this.popup || evt.target === removeButton){
             this.close()
             }

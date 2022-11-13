@@ -1,6 +1,6 @@
 import {Popup} from "./Popup"
 import {popupImageUrl,
-    popupImageName} from "./utils"
+    popupImageName} from "./constants"
 
 export class PopupWithImage extends Popup {
     open(src, text){

@@ -13,28 +13,16 @@ import {
     buttonEditAvatar,
     buttonEditProfile,
     buttonOpenCard,
-    buttonsCloseForm,
-    buttonSubmitAvatar,
-    buttonSubmitCard,
-    buttonSubmitProfile,
     formAvatar,
     formCard,
     formEditProfile,
     inputAvatarUrl,
     inputCardName,
     inputCardUrl,
-    inputProfileAbout,
-    inputProfileForm,
-    popupAvatar,
-    popupCard,
-    popupProfile,
-    sectionElements,
-    textProfileJob,
-    textProfileName,
     popupNameInput,
-    popupInputJob
-} from "./utils";
-import {buttons} from "../utils/constants";
+    popupInputJob,
+    formsSelectors
+} from "./constants";
 
 function hideError(input){
     setTimeout(()=>{
@@ -44,7 +32,8 @@ function hideError(input){
           spanError.textContent = "";
     },500)
   }
-// Ниже перенести в API 
+
+
 const cardDeleteCardHandler = (card, evt) => {
     api.deleteCard(card._cardID).then(() => {
         evt.target.closest('.element').remove();
@@ -69,8 +58,6 @@ const cardAddLikeHandler = (card, evt) => {
     })
 }; 
 
-// Выше перенести в Api
-
 const api = new Api({authorization: "dec5d51c-e797-4698-837e-5a0bd4b0f1d8", baseUrl: "https://nomoreparties.co/v1/plus-cohort-16"});
 const userInfo = new UserInfo({profileTitle: ".profile__info-name", profileJob: ".profile__info-lob", profileAvatar: ".profile__content"})
 let cardsSection;
@@ -92,6 +79,8 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
     }}, ".elements")
 
     cardsSection.renderItems()
+}).catch((err)=>{
+    console.log(err)
 })
 
 // Форма изменения данных профиля//
@@ -101,8 +90,8 @@ Promise.all([api.fetchProfile(), api.fetchCards()]).then((result)=>{
 const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{
     api.updateProfile.call(api, popupNameInput.value, popupInputJob.value).then((result)=>{
     userInfo.setUserInfo(result)
-    profilePopupSpecimen.close();
-})
+}).catch(err => console.log(err))
+  .finally(()=>profilePopupSpecimen.close())
 }, hideError, 
 ()=>{
     let info = userInfo.getUserInfo();
@@ -110,44 +99,51 @@ const profilePopupSpecimen = new PopupWithForm(".popup_profile", ()=>{
     popupInputJob.value = info.about;
 })
 
-
-function PopupValidation(form) {
-const profilePopupValidation = new FormValidator({
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inactiveButtonClass: 'popup__button-disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_execute',
-    spanError: '-error',
-}, form)
-    profilePopupValidation.validateForm();
-}
-
-const cardPopupSpecimen = new PopupWithForm('.popup_card', ()=>{api.createCardRequest.call(api, inputCardName.value, inputCardUrl.value)}, hideError);
+const cardPopupSpecimen = new PopupWithForm('.popup_card', ()=>{api.createCardRequest.call(api, inputCardName.value, inputCardUrl.value).then((result)=>{
+    let cardConstruct = new Card(result.name, result.link, "#element", result.likes, true, result._id);
+    let card = cardConstruct.createCard({
+        cardDeleteCardHandler,
+        cardAddLikeHandler,
+        cardDeleteLikeHandler
+    }, result.owner._id, (src, text)=>{imagePopupSpecimen.open(src, text)})
+    cardsSection.prependItem(card)
+}).catch(err => console.log(err))
+.finally(()=>cardPopupSpecimen.close())}, hideError);
 
 
-const avatarPopupSpecimen = new PopupWithForm('.popup_avatar', ()=>{api.updateAvatar.call(api, inputAvatarUrl.value)}, hideError);
+const avatarPopupSpecimen = new PopupWithForm('.popup_avatar', ()=>{api.updateAvatar.call(api, inputAvatarUrl.value).then((result)=>{
+    userInfo.setUserAvatar({avatar: result.avatar})
+}).catch(err => console.log(err))
+.finally(()=>avatarPopupSpecimen.close())}, hideError);
 
 
   profilePopupSpecimen.setEventListeners();
   cardPopupSpecimen.setEventListeners();
   avatarPopupSpecimen.setEventListeners();
 
+  const profileFormValidation = new FormValidator(formsSelectors,formEditProfile);
+  const cardFormValidation = new FormValidator(formsSelectors,formCard);
+  const avatarFormValidation = new FormValidator(formsSelectors,formAvatar);
+
+  profileFormValidation.validateForm();
+  cardFormValidation.validateForm();
+  avatarFormValidation.validateForm();
+
 
 ///nem
   buttonEditProfile.addEventListener("click", ()=>{
       profilePopupSpecimen.open();
-      PopupValidation(formEditProfile);
+      profileFormValidation.disableButton()
   });
 
   buttonOpenCard.addEventListener("click", ()=>{
       cardPopupSpecimen.open();
-      PopupValidation(formCard);
+      cardFormValidation.disableButton()
   });
 
   buttonEditAvatar.addEventListener('click',()=>{
       avatarPopupSpecimen.open();
-      PopupValidation(formAvatar);
+      avatarFormValidation.disableButton();
   })
 
 
