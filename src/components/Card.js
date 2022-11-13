@@ -6,7 +6,7 @@ class Card {
         this._likesCount = likes.length;
         this._likes = likes;
         this._isOwner = isOwner;
-        this._cardID = cardID;
+        this.cardID = cardID;
     }
 
     createCard(cardHandlers, profileID, openPopupCallback) {

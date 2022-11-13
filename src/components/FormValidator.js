@@ -19,7 +19,7 @@ export class FormValidator {
     this.spanError = spanError;
   }
 
-  _showErrorMessage(input){
+  _showErrorMessage(input) {
     let errorMessage = input.validationMessage;
     if (input.validity.patternMismatch) {
       errorMessage = input.dataset.error;
@@ -29,14 +29,14 @@ export class FormValidator {
     spanError.textContent = errorMessage;
   }
 
-  _hideErrorMessage(input){
+  _hideErrorMessage(input) {
     const spanError = document.querySelector("#" + input.id + this.spanError);
-          spanError.textContent = "";
-          spanError.classList.remove(this.errorClass);
-          spanError.textContent = "";
+    spanError.textContent = "";
+    spanError.classList.remove(this.errorClass);
+    spanError.textContent = "";
   }
 
-  _validateFormEnable(){
+  _validateFormEnable() {
     this.formElement.addEventListener("input", () => {
       const isError = !this.formElement.checkValidity();
       const submitButton = this.formElement.querySelector(
@@ -47,29 +47,29 @@ export class FormValidator {
     });
   }
 
-  showInputsErrors(){
+  showInputsErrors() {
     const popupInputs = this.formElement.querySelectorAll(this.inputSelector);
     popupInputs.forEach((i) => {
       i.addEventListener("input", () => {
         if (!i.validity.valid) {
-          this._showErrorMessage(i)
+          this._showErrorMessage(i);
         } else {
-          this._hideErrorMessage(i)
+          this._hideErrorMessage(i);
         }
       });
     });
   }
 
-  disableButton(){
+  disableButton() {
     const submitButton = this.formElement.querySelector(
       this.submitButtonSelector
     );
     submitButton.disabled = true;
-    submitButton.classList.add(this.inactiveButtonClass)
+    submitButton.classList.add(this.inactiveButtonClass);
   }
 
   validateForm() {
     this._validateFormEnable();
-    this.showInputsErrors()
+    this.showInputsErrors();
   }
 }
