@@ -86,8 +86,8 @@ Promise.all([api.fetchProfile(), api.fetchCards()])
       {
         items: result[1],
         render: function (item) {
-          let isMine = item.owner._id == result[0]._id;
-          let cardConstruct = new Card(
+          const isMine = item.owner._id == result[0]._id;
+          const cardConstruct = new Card(
             item.name,
             item.link,
             "#element",
@@ -95,7 +95,7 @@ Promise.all([api.fetchProfile(), api.fetchCards()])
             isMine,
             item._id
           );
-          let card = cardConstruct.createCard(
+          const card = cardConstruct.createCard(
             {
               cardDeleteCardHandler,
               cardAddLikeHandler,
@@ -147,7 +147,7 @@ const cardPopupSpecimen = new PopupWithForm(
     api.createCardRequest
       .call(api, inputCardName.value, inputCardUrl.value)
       .then((result) => {
-        let cardConstruct = new Card(
+        const cardConstruct = new Card(
           result.name,
           result.link,
           "#element",
@@ -155,7 +155,7 @@ const cardPopupSpecimen = new PopupWithForm(
           true,
           result._id
         );
-        let card = cardConstruct.createCard(
+        const card = cardConstruct.createCard(
           {
             cardDeleteCardHandler,
             cardAddLikeHandler,
