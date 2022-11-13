@@ -18,6 +18,9 @@ export class PopupWithForm extends Popup {
             this.inputsList.forEach(element => {
                 this.hideErrorMethod(element)
             });
+            setTimeout(()=>{
+                this.form.reset();
+            }, 500)
     }
 }
 
@@ -54,7 +57,6 @@ export class PopupWithForm extends Popup {
         this.form.addEventListener("submit",(evt)=>{
             evt.preventDefault();
             this._setButtonLoadState();
-            console.log(firstInput.value)
             secondInput ?
             this.apiMethod(firstInput.value, secondInput.value):
             this.apiMethod(firstInput.value)
