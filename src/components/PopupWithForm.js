@@ -46,7 +46,7 @@ export class PopupWithForm extends Popup {
   _getInputValues() {
     let obj = {};
     this.inputsList.forEach((input) => {
-      obj[input.dataset.apiname] = input.value;
+      obj[input.name] = input.value;
     });
 
     return obj;
