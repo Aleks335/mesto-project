@@ -3,6 +3,8 @@ export class Api {
     this.baseUrl = baseUrl;
     this.authorization = authorization;
     this.updateProfile = this.updateProfile.bind(this);
+    this.updateAvatar = this.updateAvatar.bind(this);
+    this.createCardRequest = this.createCardRequest.bind(this);
   }
 
   async fetchCards() {

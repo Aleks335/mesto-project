@@ -1,13 +1,20 @@
 export class Popup {
   constructor(selector) {
     this.popup = document.querySelector(selector);
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
 
-  _handleEscClose = (evt) => {
+  _handleEscClose(evt) {
     if (evt.key === "Escape") {
       this.close();
     }
-  };
+  }
+
+  /*_handleEscClose = (evt) => {
+    if (evt.key === "Escape") {
+      this.close();
+    }
+  }*/ // А можно ли использовать такой способ для сохранения контекста?
 
   setEventListeners() {
     const removeButton = this.popup.querySelector(".popup__close-min");
