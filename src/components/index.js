@@ -70,6 +70,29 @@ const userInfo = new UserInfo({
 });
 let cardsSection;
 
+///
+function cardConstruct(item, profile) {
+    const card  =  new Card(
+        item.name,
+        item.link,
+        "#element",
+        item.likes,
+        profile._id,
+        item._id
+    );
+
+    return card.createCard(
+        {
+            cardDeleteCardHandler,
+            cardAddLikeHandler,
+            cardDeleteLikeHandler,
+        },
+        profile._id,
+        (src, text) => {
+            imagePopupSpecimen.open(src, text);
+        }
+    );
+}
 // Отрисовка карточек//
 Promise.all([api.fetchProfile(), api.fetchCards()])
   .then((result) => {
@@ -79,27 +102,7 @@ Promise.all([api.fetchProfile(), api.fetchCards()])
       {
         items: result[1],
         render: function (item) {
-          const isMine = item.owner._id == result[0]._id;
-          const cardConstruct = new Card(
-            item.name,
-            item.link,
-            "#element",
-            item.likes,
-            isMine,
-            item._id
-          );
-          const card = cardConstruct.createCard(
-            {
-              cardDeleteCardHandler,
-              cardAddLikeHandler,
-              cardDeleteLikeHandler,
-            },
-            result[0]._id,
-            (src, text) => {
-              imagePopupSpecimen.open(src, text);
-            }
-          );
-          cardsSection.appendItem(card);
+          cardsSection.appendItem(cardConstruct(item, result[0]));
         },
       },
       ".elements"
@@ -110,10 +113,6 @@ Promise.all([api.fetchProfile(), api.fetchCards()])
   .catch((err) => {
     console.log(err);
   });
-
-// Форма изменения данных профиля//
-
-// const userInfo = new UserInfo(".profile__info-name",".profile__info-lob","profile__content")
 
 const profilePopupSpecimen = new PopupWithForm(
   ".popup_profile",
@@ -138,31 +137,14 @@ const cardPopupSpecimen = new PopupWithForm(".popup_card", (obj) => {
   api
     .createCardRequest(obj)
     .then((result) => {
-      const cardConstruct = new Card(
-        result.name,
-        result.link,
-        "#element",
-        result.likes,
-        true,
-        result._id
-      );
-      const card = cardConstruct.createCard(
-        {
-          cardDeleteCardHandler,
-          cardAddLikeHandler,
-          cardDeleteLikeHandler,
-        },
-        result.owner._id,
-        (src, text) => {
-          imagePopupSpecimen.open(src, text);
-        }
-      );
-      cardsSection.prependItem(card);
+
+      cardsSection.prependItem(cardConstruct(result, result.owner));
       cardPopupSpecimen.close();
     })
     .catch((err) => console.log(err))
     .finally(() => cardPopupSpecimen.setButtonCompleteState());
 });
+
 
 const avatarPopupSpecimen = new PopupWithForm(".popup_avatar", (obj) => {
   api

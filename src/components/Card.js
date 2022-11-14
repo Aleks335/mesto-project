@@ -1,11 +1,11 @@
 class Card {
-    constructor(name, link, templateSelector, likes, isOwner, cardID) {
+    constructor(name, link, templateSelector, likes, ownerID, cardID) {
         this._name = name;
         this._link = link;
         this._templateSelector = templateSelector;
         this._likesCount = likes.length;
         this._likes = likes;
-        this._isOwner = isOwner;
+        this._isOwner = ownerID == cardID;
         this.cardID = cardID;
     }
 
