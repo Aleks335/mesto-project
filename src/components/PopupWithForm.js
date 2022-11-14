@@ -15,7 +15,7 @@ export class PopupWithForm extends Popup {
     this.submitButton.textContent = "Сохранение...";
   }
 
-  _setButtonCompleteState() {
+  setButtonCompleteState() {
     this.submitButton.textContent = this.submitButtonDefaultText;
   }
 
@@ -31,7 +31,7 @@ export class PopupWithForm extends Popup {
   close() {
     super.close();
     setTimeout(() => {
-      this._setButtonCompleteState();
+      this.setButtonCompleteState();
       this.form.reset();
     }, 500);
   }
@@ -43,15 +43,21 @@ export class PopupWithForm extends Popup {
     super.open();
   }
 
+  _getInputValues() {
+    let obj = {};
+    this.inputsList.forEach((input) => {
+      obj[input.dataset.apiname] = input.value;
+    });
+
+    return obj;
+  }
+
   setEventListeners() {
     super.setEventListeners();
-    const [firstInput, secondInput] = this.inputsList;
     this.form.addEventListener("submit", (evt) => {
       evt.preventDefault();
       this._setButtonLoadState();
-      secondInput
-        ? this.apiMethod(firstInput.value, secondInput.value)
-        : this.apiMethod(firstInput.value);
+      this.apiMethod(this._getInputValues());
     });
   }
 }

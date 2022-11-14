@@ -22,16 +22,9 @@ import {
   popupNameInput,
   popupInputJob,
   formsSelectors,
+  popupImageUrl,
+  popupImageName,
 } from "./constants";
-
-function hideError(input) {
-  setTimeout(() => {
-    const spanError = document.querySelector("#" + input.id + "-error");
-    spanError.textContent = "";
-    spanError.classList.remove(this.errorClass);
-    spanError.textContent = "";
-  }, 500);
-}
 
 const cardDeleteCardHandler = (card, evt) => {
   api
@@ -124,14 +117,15 @@ Promise.all([api.fetchProfile(), api.fetchCards()])
 
 const profilePopupSpecimen = new PopupWithForm(
   ".popup_profile",
-  () => {
-    api.updateProfile
-      .call(api, popupNameInput.value, popupInputJob.value)
+  (obj) => {
+    api
+      .updateProfile(obj)
       .then((result) => {
         userInfo.setUserInfo(result);
+        profilePopupSpecimen.close();
       })
       .catch((err) => console.log(err))
-      .finally(() => profilePopupSpecimen.close());
+      .finally(() => profilePopupSpecimen.setButtonCompleteState());
   },
   () => {
     let info = userInfo.getUserInfo();
@@ -140,9 +134,9 @@ const profilePopupSpecimen = new PopupWithForm(
   }
 );
 
-const cardPopupSpecimen = new PopupWithForm(".popup_card", () => {
-  api.createCardRequest
-    .call(api, inputCardName.value, inputCardUrl.value)
+const cardPopupSpecimen = new PopupWithForm(".popup_card", (obj) => {
+  api
+    .createCardRequest(obj)
     .then((result) => {
       const cardConstruct = new Card(
         result.name,
@@ -164,19 +158,21 @@ const cardPopupSpecimen = new PopupWithForm(".popup_card", () => {
         }
       );
       cardsSection.prependItem(card);
+      cardPopupSpecimen.close();
     })
     .catch((err) => console.log(err))
-    .finally(() => cardPopupSpecimen.close());
+    .finally(() => cardPopupSpecimen.setButtonCompleteState());
 });
 
-const avatarPopupSpecimen = new PopupWithForm(".popup_avatar", () => {
-  api.updateAvatar
-    .call(api, inputAvatarUrl.value)
+const avatarPopupSpecimen = new PopupWithForm(".popup_avatar", (obj) => {
+  api
+    .updateAvatar(obj)
     .then((result) => {
       userInfo.setUserAvatar({ avatar: result.avatar });
+      avatarPopupSpecimen.close();
     })
     .catch((err) => console.log(err))
-    .finally(() => avatarPopupSpecimen.close());
+    .finally(() => avatarPopupSpecimen.setButtonCompleteState());
 });
 
 profilePopupSpecimen.setEventListeners();
@@ -215,5 +211,9 @@ buttonEditAvatar.addEventListener("click", () => {
 
 // imagePopup
 
-const imagePopupSpecimen = new PopupWithImage(".popup_img");
+const imagePopupSpecimen = new PopupWithImage(
+  ".popup_img",
+  popupImageUrl,
+  popupImageName
+);
 imagePopupSpecimen.setEventListeners();

@@ -1,10 +1,16 @@
 import { Popup } from "./Popup";
-import { popupImageUrl, popupImageName } from "./constants";
 
 export class PopupWithImage extends Popup {
+  constructor(selector, popupImageUrlElement, popupImageNameElement) {
+    super(selector);
+    this.popupImageUrlElement = popupImageUrlElement;
+    this.popupImageNameElement = popupImageNameElement;
+  }
+
   open(src, text) {
-    popupImageUrl.src = src;
-    popupImageName.textContent = text;
+    this.popupImageUrlElement.src = src;
+    this.popupImageNameElement.textContent = text;
+    this.popupImageUrlElement.alt = text;
     super.open();
   }
 }

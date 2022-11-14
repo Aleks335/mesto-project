@@ -18,10 +18,8 @@ export class UserInfo {
   //Метод принимает новые данные пользователя, отправляет их на сервер и добавляет их на страницу
   setUserInfo = ({ name, about }) => {
     //Принимает новые значения
-    this._name = name;
-    this._about = about;
-    this._profileTitle.textContent = this._name;
-    this._profileJob.textContent = this._about;
+    this._profileTitle.textContent = name;
+    this._profileJob.textContent = about;
   };
 
   setUserAvatar = ({ avatar }) => {

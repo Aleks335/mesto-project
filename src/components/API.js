@@ -2,6 +2,7 @@ export class Api {
   constructor({ baseUrl, authorization }) {
     this.baseUrl = baseUrl;
     this.authorization = authorization;
+    this.updateProfile = this.updateProfile.bind(this);
   }
 
   async fetchCards() {
@@ -28,17 +29,14 @@ export class Api {
     return result;
   }
 
-  async updateProfile(newName, newAbout) {
+  async updateProfile(obj) {
     const request = await fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: {
         authorization: this.authorization,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: newName,
-        about: newAbout,
-      }),
+      body: JSON.stringify(obj),
     });
     if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
@@ -46,17 +44,14 @@ export class Api {
     return result;
   }
 
-  async createCardRequest(name, link) {
+  async createCardRequest(obj) {
     const request = await fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: {
         authorization: this.authorization,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: name,
-        link: link,
-      }),
+      body: JSON.stringify(obj),
     });
     if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
     const result = await request.json();
@@ -100,16 +95,14 @@ export class Api {
     console.log(result);
     return result;
   }
-  async updateAvatar(avatar) {
+  async updateAvatar(obj) {
     const request = await fetch(`${this.baseUrl}/users/me/avatar/`, {
       method: "PATCH",
       headers: {
         authorization: this.authorization,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        avatar: avatar,
-      }),
+      body: JSON.stringify(obj),
     });
     if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
