@@ -1,15 +1,16 @@
 class Card {
-    constructor(name, link, templateSelector, likes, ownerID, cardID) {
+    constructor(name, link, templateSelector, likes, ownerID, cardID, cardOwnerID , api) {
         this._name = name;
         this._link = link;
         this._templateSelector = templateSelector;
         this._likesCount = likes.length;
         this._likes = likes;
-        this._isOwner = ownerID == cardID;
+        this._isOwner = ownerID === cardOwnerID;
         this.cardID = cardID;
+        this.api = api;
     }
 
-    createCard(cardHandlers, profileID, openPopupCallback) {
+    createCard(profileID, openPopupCallback) {
         const template = document.querySelector(this._templateSelector).content;
         const cardElement = template.querySelector(".element").cloneNode(true);
         const popupImg = document.querySelector('.popup_img');
@@ -29,7 +30,7 @@ class Card {
         if (this.isLiked)
             this._toggleLike(cardElement.querySelector('.element__smiley'))
         this.cardElement = cardElement;
-        this._setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton, openPopupCallback);
+        this._setEventListener(cardElement, elementPhoto, popupImageUrl, popupImg, openPopupCallback, removeButton);
         return this.cardElement;
     }
 
@@ -61,10 +62,10 @@ class Card {
     }
 
 
-    _setEventListener(cardHandlers, cardElement, elementPhoto, popupImageUrl, popupImg, removeButton = null, openPopupCallback) {
+    _setEventListener(cardElement, elementPhoto, popupImageUrl, popupImg, openPopupCallback, removeButton) {
         if (removeButton)
             removeButton.addEventListener('click', (evt) => {
-                cardHandlers.cardDeleteCardHandler(this, evt);
+                this.cardDeleteCardHandler(evt);
             });
 
         elementPhoto.addEventListener('click', () => {
@@ -73,13 +74,48 @@ class Card {
         cardElement.querySelector('.element__smiley').addEventListener('click', (evt) => {
             console.log(this.isLiked)
             if (this.isLiked) {
-                cardHandlers.cardDeleteLikeHandler(this, evt);
+                this.cardDeleteLikeHandler(evt);
             } else {
-                cardHandlers.cardAddLikeHandler(this, evt)
+                this.cardAddLikeHandler(evt)
                 console.log(this)
             }
         })
     }
+
+    cardDeleteCardHandler(){
+        this.api
+    .deleteCard(this.cardID)
+    .then(() => {
+        this.cardElement.remove();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    }
+    cardDeleteLikeHandler(evt){
+        this.api
+    .deleteLike(this.cardID)
+    .then(() => {
+        this.decLike(evt);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    }
+
+
+    cardAddLikeHandler(evt){
+        this.api
+            .addLike(this.cardID)
+            .then(() => {
+                this.incLike(evt);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+
 }
 
 export {

@@ -16,6 +16,7 @@ export class Api {
     if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
     const result = await request.json();
+    console.log(result);
     return result;
   }
 

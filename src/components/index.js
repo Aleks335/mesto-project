@@ -26,43 +26,11 @@ import {
   popupImageName,
 } from "./constants";
 
-const cardDeleteCardHandler = (card, evt) => {
-  api
-    .deleteCard(card.cardID)
-    .then(() => {
-      evt.target.closest(".element").remove();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-const cardDeleteLikeHandler = (card, evt) => {
-  api
-    .deleteLike(card.cardID)
-    .then(() => {
-      card.decLike(evt);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-const cardAddLikeHandler = (card, evt) => {
-  api
-    .addLike(card.cardID)
-    .then(() => {
-      card.incLike(evt);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
 const api = new Api({
   authorization: "dec5d51c-e797-4698-837e-5a0bd4b0f1d8",
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-16",
 });
+
 const userInfo = new UserInfo({
   profileTitle: ".profile__info-name",
   profileJob: ".profile__info-lob",
@@ -78,15 +46,12 @@ function cardConstruct(item, profile) {
         "#element",
         item.likes,
         profile._id,
-        item._id
+        item._id,
+        item.owner._id,
+        api,
     );
 
     return card.createCard(
-        {
-            cardDeleteCardHandler,
-            cardAddLikeHandler,
-            cardDeleteLikeHandler,
-        },
         profile._id,
         (src, text) => {
             imagePopupSpecimen.open(src, text);
