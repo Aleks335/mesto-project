@@ -12,7 +12,6 @@ const popupInputJob = document.querySelector(".popup__input_str_jop");
 
 const formsSelectors = {
   inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
   inactiveButtonClass: "popup__button-disabled",
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_execute",

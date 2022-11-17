@@ -2,19 +2,16 @@ export class FormValidator {
   constructor(
     {
       inputSelector,
-      submitButtonSelector,
       inactiveButtonClass,
-      inputErrorClass,
       errorClass,
       spanError,
     },
-    formElement
+    formElement, submitButtonElement
   ) {
     this.formElement = formElement;
     this.inputSelector = inputSelector;
-    this.submitButtonSelector = submitButtonSelector;
+    this.submitButtonElement = submitButtonElement;
     this.inactiveButtonClass = inactiveButtonClass;
-    this.inputErrorClass = inputErrorClass;
     this.errorClass = errorClass;
     this.spanError = spanError;
   }
@@ -40,7 +37,7 @@ export class FormValidator {
     this.formElement.addEventListener("input", () => {
       const isError = !this.formElement.checkValidity();
       const submitButton = this.formElement.querySelector(
-        this.submitButtonSelector
+        this.submitButtonElement
       );
       submitButton.disabled = isError;
       submitButton.classList.toggle(this.inactiveButtonClass, isError);
@@ -61,11 +58,8 @@ export class FormValidator {
   }
 
   disableButton() {
-    const submitButton = this.formElement.querySelector(
-      this.submitButtonSelector
-    );
-    submitButton.disabled = true;
-    submitButton.classList.add(this.inactiveButtonClass);
+    this.submitButtonElement.disabled = true;
+    this.submitButtonElement.classList.add(this.inactiveButtonClass);
   }
 
   validateForm() {

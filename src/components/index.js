@@ -157,10 +157,11 @@ avatarPopupSpecimen.setEventListeners();
 
 const profileFormValidation = new FormValidator(
     formsSelectors,
-    formEditProfile
+    formEditProfile,
+    '.popup__button'
 );
-const cardFormValidation = new FormValidator(formsSelectors, formCard);
-const avatarFormValidation = new FormValidator(formsSelectors, formAvatar);
+const cardFormValidation = new FormValidator(formsSelectors, formCard, '.popup__button');
+const avatarFormValidation = new FormValidator(formsSelectors, formAvatar, '.popup__button');
 
 profileFormValidation.validateForm();
 cardFormValidation.validateForm();
