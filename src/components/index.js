@@ -123,7 +123,7 @@ const profilePopupSpecimen = new PopupWithForm(
             .finally(() => profilePopupSpecimen.setButtonCompleteState());
     },
     () => {
-        let info = userInfo.getUserInfo();
+        const info = userInfo.getUserInfo();
         popupNameInput.value = info.name;
         popupInputJob.value = info.about;
     }
