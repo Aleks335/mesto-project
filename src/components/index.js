@@ -69,7 +69,7 @@ const userInfo = new UserInfo({
 let cardsSection;
 
 ///
-function cardConstruct(item, profile) {
+function createNewCard(item, profile) {
     const card = new Card(
         item.name,
         item.link,
@@ -98,7 +98,7 @@ Promise.all([api.fetchProfile(), api.fetchCards()])
             {
                 items: result[1],
                 render: function (item) {
-                    cardsSection.appendItem(cardConstruct(item, result[0]));
+                    cardsSection.appendItem(createNewCard(item, result[0]));
                 },
             },
             ".elements"
@@ -133,7 +133,7 @@ const cardPopupSpecimen = new PopupWithForm(".popup_card", (obj) => {
     api
         .createCardRequest(obj)
         .then((result) => {
-            cardsSection.prependItem(cardConstruct(result, result.owner));
+            cardsSection.prependItem(createNewCard(result, result.owner));
             cardPopupSpecimen.close();
         })
         .catch((err) => console.log(err))
