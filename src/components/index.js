@@ -81,7 +81,7 @@ function createNewCard(item, profileId) {
     { cardDeleteCardHandler, cardDeleteLikeHandler, cardAddLikeHandler }
   );
 
-  return card.createCard(profileId, (src, text) => {
+  return card.createCard((src, text) => {
     imagePopupSpecimen.open(src, text);
   });
 }
@@ -129,7 +129,7 @@ const cardPopupSpecimen = new PopupWithForm(".popup_card", (obj) => {
   api
     .createCardRequest(obj)
     .then((result) => {
-      cardsSection.prependItem(createNewCard(result, result.owner));
+      cardsSection.prependItem(createNewCard(result, result.owner._id));
       cardPopupSpecimen.close();
     })
     .catch((err) => console.log(err))

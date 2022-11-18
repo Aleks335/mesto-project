@@ -11,6 +11,7 @@ class Card {
   ) {
     this._name = name;
     this._link = link;
+    this._profileId = ownerID;
     this._templateSelector = templateSelector;
     this._likesCount = likes.length;
     this._likes = likes;
@@ -21,7 +22,7 @@ class Card {
     this.cardAddLikeHandler = cardAddLikeHandler;
   }
 
-  createCard(profileID, openPopupCallback) {
+  createCard(openPopupCallback) {
     const template = document.querySelector(this._templateSelector).content;
     const cardElement = template.querySelector(".element").cloneNode(true);
     const elementPhoto = cardElement.querySelector(".element__photo");
@@ -36,7 +37,7 @@ class Card {
     elementPhoto.alt = this._name;
     cardElement.querySelector(".element__smiley-numbers").textContent =
       this._likesCount;
-    this.isLiked = this._isCardLiked(profileID);
+    this.isLiked = this._isCardLiked(this._profileID);
     if (this.isLiked)
       this._toggleLike(cardElement.querySelector(".element__smiley"));
     this.cardElement = cardElement;
@@ -58,10 +59,10 @@ class Card {
     this.cardElement.remove();
   }
 
-  _isCardLiked(profileID) {
+  _isCardLiked() {
     let isLiked = false;
     this._likes.forEach((item) => {
-      if (item._id === profileID) isLiked = true;
+      if (item._id === this._profileId) isLiked = true;
     });
     return isLiked;
   }
