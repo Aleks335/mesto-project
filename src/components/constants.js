@@ -16,6 +16,7 @@ const formsSelectors = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_execute",
   spanError: "-error",
+  submitButtonClass: ".popup__button",
 };
 
 export {

@@ -5,15 +5,16 @@ export class FormValidator {
       inactiveButtonClass,
       errorClass,
       spanError,
+      submitButtonClass,
     },
-    formElement, submitButtonElement
+    formElement
   ) {
     this.formElement = formElement;
-    this.inputSelector = inputSelector;
-    this.submitButtonElement = submitButtonElement;
+    this.submitButtonElement = formElement.querySelector(submitButtonClass);
     this.inactiveButtonClass = inactiveButtonClass;
     this.errorClass = errorClass;
     this.spanError = spanError;
+    this.inputList = formElement.querySelectorAll(inputSelector);
   }
 
   _showErrorMessage(input) {
@@ -33,20 +34,25 @@ export class FormValidator {
     spanError.textContent = "";
   }
 
+  hideErrors() {
+    this.inputList.forEach((item) => {
+      this._hideErrorMessage(item);
+    });
+  }
+
   _validateFormEnable() {
     this.formElement.addEventListener("input", () => {
       const isError = !this.formElement.checkValidity();
-      const submitButton = this.formElement.querySelector(
-        this.submitButtonElement
+      this.submitButtonElement.disabled = isError;
+      this.submitButtonElement.classList.toggle(
+        this.inactiveButtonClass,
+        isError
       );
-      submitButton.disabled = isError;
-      submitButton.classList.toggle(this.inactiveButtonClass, isError);
     });
   }
 
   showInputsErrors() {
-    const popupInputs = this.formElement.querySelectorAll(this.inputSelector);
-    popupInputs.forEach((i) => {
+    this.inputList.forEach((i) => {
       i.addEventListener("input", () => {
         if (!i.validity.valid) {
           this._showErrorMessage(i);

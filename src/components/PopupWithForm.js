@@ -19,15 +19,6 @@ export class PopupWithForm extends Popup {
     this.submitButton.textContent = this.submitButtonDefaultText;
   }
 
-  hideErrors() {
-    this.inputsList.forEach((input) => {
-      const spanError = document.querySelector("#" + input.id + "-error");
-      spanError.textContent = "";
-      spanError.classList.remove(this.errorClass);
-      spanError.textContent = "";
-    });
-  }
-
   close() {
     super.close();
     setTimeout(() => {
