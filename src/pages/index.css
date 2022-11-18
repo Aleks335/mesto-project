@@ -37,6 +37,7 @@
 @import url(../blocks/profile/__info-name/profile__info-name.css);
 /*============popup============*/
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_img/popup_img.css);
 @import url(../blocks/popup/__body/popup__body.css);
 @import url(../blocks/popup/__button/popup__button.css);
 @import url(../blocks/popup/__close/popup__close.css);

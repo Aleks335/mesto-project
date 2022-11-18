@@ -1,137 +1,116 @@
-const fetchCards = async () => {
-    const request = await fetch('https://mesto.nomoreparties.co/v1/plus-cohort-14/cards', {
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
-        }
-    })
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
+export class Api {
+  constructor({ baseUrl, authorization }) {
+    this.baseUrl = baseUrl;
+    this.authorization = authorization;
+    this.updateProfile = this.updateProfile.bind(this);
+    this.updateAvatar = this.updateAvatar.bind(this);
+    this.createCardRequest = this.createCardRequest.bind(this);
+  }
 
-    const result = await request.json();
-    return result;
-}
-
-const fetchProfile = async () => {
-    const request = await fetch('https://mesto.nomoreparties.co/v1/plus-cohort-14/users/me', {
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
-        }
-    })
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
-
-    const result = await request.json();
-    return result;
-}
-
-const updateProfile = async (newName, newAbout) => {
-    const request = await fetch('https://mesto.nomoreparties.co/v1/plus-cohort-14/users/me', {
-        method: 'PATCH',
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: newName,
-            about: newAbout
-        })
+  async fetchCards() {
+    const request = await fetch(`${this.baseUrl}/cards`, {
+      headers: {
+        authorization: this.authorization,
+      },
     });
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
     const result = await request.json();
+    console.log(result);
     return result;
-}
+  }
 
-const createCardRequest = async (name, link) => {
-    const request = await fetch('https://mesto.nomoreparties.co/v1/plus-cohort-14/cards', {
-        method: 'POST',
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            link: link
-        })
+  async fetchProfile() {
+    const request = await fetch(`${this.baseUrl}/users/me`, {
+      headers: {
+        authorization: this.authorization,
+      },
     });
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
-    const result = await request.json();
-    return result;
-}
-
-const deleteCard = async (cardId) => {
-    const request = await fetch(`https://nomoreparties.co/v1/plus-cohort-14/cards/${cardId}`, {
-        method: 'DELETE',
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
-        }
-    })
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
     const result = await request.json();
-    console.log(result);
     return result;
-}
+  }
 
+  async updateProfile(obj) {
+    const request = await fetch(`${this.baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: {
+        authorization: this.authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    });
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
-const deleteLike = async (cardId) => {
-    const request = await fetch(`https://nomoreparties.co/v1/plus-cohort-14/cards/likes/${cardId}`, {
-        method: 'DELETE',
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
-        }
-    })
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
     const result = await request.json();
     return result;
-}
+  }
 
-const addLike = async (cardId) => {
-    const request = await fetch(`https://nomoreparties.co/v1/plus-cohort-14/cards/likes/${cardId}`, {
-        method: 'PUT',
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f'
-        }
-    })
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
-
+  async createCardRequest(obj) {
+    const request = await fetch(`${this.baseUrl}/cards`, {
+      method: "POST",
+      headers: {
+        authorization: this.authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    });
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
     const result = await request.json();
-    console.log(result);
     return result;
-}
+  }
 
-const updateAvatar = async (avatar) => {
-    const request = await fetch('https://nomoreparties.co/v1/plus-cohort-14/users/me/avatar/', {
-        method: 'PATCH',
-        headers: {
-            authorization: '2ec06afe-eca5-4f7b-b157-153d9348809f',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            avatar: avatar
-        })
-    })
-    if (!request.ok)
-        return Promise.reject(`Ошибка: ${request.status}`);
+  async deleteCard(cardId) {
+    const request = await fetch(`${this.baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: {
+        authorization: this.authorization,
+      },
+    });
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
     const result = await request.json();
     console.log(result);
     return result;
-}
+  }
+  async deleteLike(cardId) {
+    const request = await fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
+      method: "DELETE",
+      headers: {
+        authorization: this.authorization,
+      },
+    });
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
+    const result = await request.json();
+    return result;
+  }
+  async addLike(cardId) {
+    const request = await fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
+      method: "PUT",
+      headers: {
+        authorization: this.authorization,
+      },
+    });
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
+    const result = await request.json();
+    console.log(result);
+    return result;
+  }
+  async updateAvatar(obj) {
+    const request = await fetch(`${this.baseUrl}/users/me/avatar/`, {
+      method: "PATCH",
+      headers: {
+        authorization: this.authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    });
+    if (!request.ok) return Promise.reject(`Ошибка: ${request.status}`);
 
-export {
-    fetchCards,
-    fetchProfile,
-    updateProfile,
-    createCardRequest,
-    deleteCard,
-    deleteLike,
-    addLike,
-    updateAvatar
+    const result = await request.json();
+    console.log(result);
+    return result;
+  }
 }
